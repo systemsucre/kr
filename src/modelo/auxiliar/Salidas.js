@@ -210,7 +210,7 @@ export class Salidas {
           detalle = ?, 
           fecha_solicitud = ?, 
           updated_at = ?
-        WHERE id = ? AND (estado = 1 OR estado = 4)
+        WHERE id = ? AND estado = 1
     `;
 
       const [result] = await pool.query(sql, [

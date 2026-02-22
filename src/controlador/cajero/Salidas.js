@@ -37,6 +37,7 @@ rutas.post("/listar-tramites", async (req, res) => {
 rutas.post("/obtener-tramite", async (req, res) => {
   try {
     const resultado = await objetoSalida.obtenerTramite(req.body.id);
+    // console.log(resultado, req.body.id)
     return res.json({ data: resultado, ok: true });
   } catch (error) {
     return res.status(500).json({ ok: false, msg: "Error al listar trámites" });

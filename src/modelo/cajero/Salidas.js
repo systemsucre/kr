@@ -53,7 +53,7 @@ export class Salidas {
           SELECT 
             t.id, 
             t.codigo, 
-            CONCAT(c.nombre, ' ', c.ap1, ' ', IFNULL(c.ap2, '')) AS cliente_nombre, 
+            CONCAT(c.nombre, ' ', c.ap1, ' ', IFNULL(c.ap2, '')) AS cliente_nombre, c.id as id_cliente,
             t.estado, 
             t.fecha_ingreso, 
             t.costo,
@@ -68,7 +68,7 @@ export class Salidas {
             -- LEFT JOIN para no perder trámites sin gastos
             LEFT JOIN salidas s ON t.id = s.id_tramite AND s.estado < 4
             WHERE t.id = ${pool.escape(id)}
-            GROUP BY t.id;
+            GROUP BY t.id;  
         `;
       const [rows] = await pool.query(sql);
       // console.log(rows, '   tramites unico')

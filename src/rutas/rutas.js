@@ -11,8 +11,7 @@ import {
 
 
 
-// OPERATIVO
-import registro from "../controlador/registro.js";
+// MI PERFIL
 import miPerfil from "../controlador/miPerfil.js";
 
 // Admiministrador
@@ -30,6 +29,7 @@ import SalidasGerente from '../controlador/gerente/Salidas.js'
 
 // CAJERO
 import SalidaCajero from '../controlador/cajero/Salidas.js'
+import IngresosCajero from '../controlador/cajero/ingresos.js'
 
 // import { createOrder, recivedWebhook } from "../controlador/controller/payment.controller.js";
 
@@ -252,6 +252,7 @@ rutas.use('/salidas-gerente', verificacion, gerente, SalidasGerente)
 
 // CAJERO
 rutas.use('/salidas-cajero', verificacion, cajero, SalidaCajero)
+rutas.use('/ingresos-cajero', verificacion, cajero, IngresosCajero)
 
 
 rutas.use("/miPerfil", verificacion, miPerfil);
