@@ -5,10 +5,9 @@ export class Salidas {
   /**
    * Lista trámites con nombres de clientes para el select/modal de creación
    */
-  listarTramites = async () => {
-
-    try {
-      const sql = `
+listarTramites = async () => {
+  try {
+    const sql = `
       SELECT 
         t.id, 
         t.codigo, 
@@ -20,27 +19,29 @@ export class Salidas {
         t.fecha_ingreso, 
         t.fecha_finalizacion,
         tt.tipo_tramite AS nombre_tipo_tramite,
-        /* Sumamos los montos de las salidas, si es NULL ponemos 0 */
+        /* Sumamos los montos de las salidas solo si están despachadas */
         IFNULL(SUM(s.monto), 0) AS total_gastos,
-        /* Calculamos la utilidad o saldo restante si lo necesitas */
+        /* El saldo disponible ahora refleja solo lo restado por gastos despachados */
         (t.costo - IFNULL(SUM(s.monto), 0)) AS saldoDisponible
       FROM tramites t
       INNER JOIN clientes c ON t.id_cliente = c.id
       INNER JOIN tipo_tramites tt ON t.id_tipo_tramite = tt.id
-      /* Unimos con salidas filtrando solo las que NO estén rechazadas (suponiendo estado 4 es rechazado) */
-      LEFT JOIN salidas s ON t.id = s.id_tramite AND s.estado <> 4
+      /* MODIFICACIÓN AQUÍ: 
+         Filtramos en el JOIN para que s.monto sea NULL si no está despachado.
+         Cambiamos "s.estado <> 4" por "s.estado = 3" (o tu ID de despachado)
+      */
+      LEFT JOIN salidas s ON t.id = s.id_tramite AND s.estado = 3
       WHERE t.eliminado = 1
       GROUP BY t.id
       ORDER BY t.id DESC`;
-      const [rows] = await pool.query(sql);
-      // console.log(rows, '   tramites')
 
-      return rows;
-    } catch (error) {
-      console.error("Error al listar trámites:", error);
-      throw error;
-    }
-  };
+    const [rows] = await pool.query(sql);
+    return rows;
+  } catch (error) {
+    console.error("Error al listar trámites:", error);
+    throw error;
+  }
+};
 
   /**
  * TRAMITE PARA VISTA PREVIA CREAR GASTO
