@@ -27,7 +27,7 @@ export class Tramite {
       INNER JOIN clientes c ON t.id_cliente = c.id
       INNER JOIN tipo_tramites tt ON t.id_tipo_tramite = tt.id
       /* Unimos con salidas filtrando solo las que NO estén rechazadas (suponiendo estado 4 es rechazado) */
-      LEFT JOIN salidas s ON t.id = s.id_tramite AND s.estado <> 4
+      LEFT JOIN salidas s ON t.id = s.id_tramite AND s.estado = 3
       WHERE t.eliminado = 1
       GROUP BY t.id
       ORDER BY t.id DESC`;
